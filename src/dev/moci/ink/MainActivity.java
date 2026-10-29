@@ -162,7 +162,7 @@ public class MainActivity extends Activity {
         capsule.addView(previousPage,new LinearLayout.LayoutParams(0,-1,1));
         View separator=new View(this);separator.setBackgroundColor(0xffb5b5b5);capsule.addView(separator,new LinearLayout.LayoutParams(dp(1),-1));
         capsule.addView(nextPage,new LinearLayout.LayoutParams(0,-1,1));
-        LinearLayout.LayoutParams capsuleLayout=new LinearLayout.LayoutParams(dp(112),dp(40));capsuleLayout.leftMargin=dp(6);
+        LinearLayout.LayoutParams capsuleLayout=new LinearLayout.LayoutParams(dp(120),dp(40));capsuleLayout.leftMargin=dp(6);
         pageControls.addView(capsule,capsuleLayout);
         pageBar.addView(pageControls);
         LinearLayout.LayoutParams barLayout=new LinearLayout.LayoutParams(-1,-2);barLayout.leftMargin=-dp(20);barLayout.rightMargin=-dp(20);barLayout.bottomMargin=-dp(6);
@@ -193,7 +193,8 @@ public class MainActivity extends Activity {
             View mark=new View(this);mark.setBackgroundColor(id.equals(tab)?Color.BLACK:Color.WHITE);cell.addView(mark,new LinearLayout.LayoutParams(-1,dp(2)));
             Button icon=new BarButton(this,id,labels[i]);icon.setSelected(id.equals(tab));
             icon.setOnClickListener(v->{hideKeyboard();tab=id;render();});cell.addView(icon,new LinearLayout.LayoutParams(-1,0,1));
-            tabs.addView(cell,new LinearLayout.LayoutParams(dp(44),-1));
+            int width=Math.min(dp(48),Math.max(dp(32),(getResources().getDisplayMetrics().widthPixels-dp(180))/4));
+            tabs.addView(cell,new LinearLayout.LayoutParams(width,-1));
         }
     }
     private void render(){

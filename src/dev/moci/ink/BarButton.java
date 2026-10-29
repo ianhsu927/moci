@@ -16,7 +16,7 @@ final class BarButton extends Button {
         setMinWidth(0);setMinimumWidth(0);setMinHeight(0);setMinimumHeight(0);setPadding(0,0,0,0);
     }
     @Override protected void onDraw(Canvas canvas){
-        float size=26*getResources().getDisplayMetrics().density;
+        float size=29*getResources().getDisplayMetrics().density;
         canvas.save();canvas.translate((getWidth()-size)/2,(getHeight()-size)/2);canvas.scale(size/24,size/24);
         paint.setColor(isEnabled()?Color.BLACK:0xffb7b7b7);paint.setStrokeWidth(isSelected()?2.5f:1.9f);
         paint.setStyle(Paint.Style.STROKE);paint.setStrokeCap(Paint.Cap.ROUND);paint.setStrokeJoin(Paint.Join.ROUND);

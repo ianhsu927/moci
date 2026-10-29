@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="dev.moci.ink" android:versionCode="12" android:versionName="1.2.7">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="dev.moci.ink" android:versionCode="13" android:versionName="1.2.8">
     <uses-sdk android:minSdkVersion="26" android:targetSdkVersion="36" />
     <uses-permission android:name="android.permission.INTERNET" />
     <application android:label="墨词" android:icon="@drawable/ic_moci" android:theme="@style/AppTheme" android:allowBackup="false" android:supportsRtl="true" android:usesCleartextTraffic="false">

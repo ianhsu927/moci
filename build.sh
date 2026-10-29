@@ -16,6 +16,6 @@ keystore="${MOCI_KEYSTORE:-.build/debug.keystore}"
 if [ ! -f "$keystore" ]; then
  "$jdk_dir/bin/keytool" -genkeypair -keystore "$keystore" -storepass android -keypass android -alias moci -dname 'CN=MoCi Development' -keyalg RSA -keysize 2048 -validity 10000 -noprompt
 fi
-JAVA_HOME="$jdk_dir" "$build_dir/apksigner" sign --v4-signing-enabled false --ks "$keystore" --ks-pass pass:android --key-pass pass:android --out dist/moci-1.2.7.apk .build/aligned.apk
-JAVA_HOME="$jdk_dir" "$build_dir/apksigner" verify dist/moci-1.2.7.apk
-printf '\nBuilt: dist/moci-1.2.7.apk\n'
+JAVA_HOME="$jdk_dir" "$build_dir/apksigner" sign --v4-signing-enabled false --ks "$keystore" --ks-pass pass:android --key-pass pass:android --out dist/moci-1.2.8.apk .build/aligned.apk
+JAVA_HOME="$jdk_dir" "$build_dir/apksigner" verify dist/moci-1.2.8.apk
+printf '\nBuilt: dist/moci-1.2.8.apk\n'
