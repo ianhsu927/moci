@@ -2,6 +2,18 @@
 
 面向墨水屏的 Android 英汉查词应用，支持在线词典与自定义 OpenAI 兼容模型。
 
+## 界面展示
+
+墨词 1.2.8 在 iFlytek Fika（Android 16）上的实机截图。AI 查词和生词本页面使用演示内容，不含个人配置或查询记录。
+
+| 今日推荐 | 词典查询 |
+| :---: | :---: |
+| <img src="docs/screenshots/home.png" alt="今日推荐：首页展示五个推荐词、中文释义和底部导航" width="280"> | <img src="docs/screenshots/dictionary.png" alt="词典查询：serendipity 的音标、中文释义及分页控件" width="280"> |
+
+| AI 查词 | 生词本 |
+| :---: | :---: |
+| <img src="docs/screenshots/ai.png" alt="AI 查词示例：中文释义、用法讲解及上下翻页按钮" width="280"> | <img src="docs/screenshots/vocabulary.png" alt="生词本示例：收藏单词列表、中文释义和底部翻页栏" width="280"> |
+
 ## 功能
 
 - 黑白界面、大字号、搜索框边框，精简说明文案。
