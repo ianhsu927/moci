@@ -111,7 +111,7 @@ public class MainActivity extends Activity {
         return super.dispatchKeyEvent(event);
     }
     private void build(){
-        root=new LinearLayout(this);root.setOrientation(1);root.setBackgroundColor(Color.WHITE);
+        root=new LinearLayout(this);root.setOrientation(1);root.setBackgroundColor(Color.WHITE);root.setClipToPadding(false);
         root.setPadding(dp(20),dp(6),dp(20),dp(6));setContentView(root);
         if(Build.VERSION.SDK_INT>=30){
             root.setOnApplyWindowInsetsListener((v,insets)->{
@@ -144,22 +144,29 @@ public class MainActivity extends Activity {
         search.addView(field,new LinearLayout.LayoutParams(0,dp(56),1));
         lookupButton=button("查询",true,v->submitLookup());
         LinearLayout.LayoutParams submit=new LinearLayout.LayoutParams(dp(74),dp(56));submit.leftMargin=dp(8);search.addView(lookupButton,submit);root.addView(search);
-        tabs=row();LinearLayout.LayoutParams nav=new LinearLayout.LayoutParams(-1,dp(58));nav.topMargin=dp(12);root.addView(tabs,nav);
+        space(root,14);
         line(root,Color.BLACK);scroll=new ScrollView(this);scroll.setFillViewport(false);scroll.setSmoothScrollingEnabled(false);scroll.setOverScrollMode(View.OVER_SCROLL_NEVER);scroll.setVerticalScrollBarEnabled(false);
         content=new LinearLayout(this);content.setOrientation(1);content.setPadding(0,dp(22),0,dp(24));scroll.addView(content);
         root.addView(scroll,new LinearLayout.LayoutParams(-1,0,1));
-        pageBar=new LinearLayout(this);pageBar.setOrientation(1);line(pageBar,Color.BLACK);
-        LinearLayout pageControls=row();pageControls.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);pageControls.setPadding(0,dp(8),0,dp(4));
-        previousPage=button("↑",false,v->turnPage(-1));
-        nextPage=button("↓",true,v->turnPage(1));
-        previousPage.setTextSize(26);nextPage.setTextSize(26);
-        previousPage.setContentDescription("上一页");nextPage.setContentDescription("下一页");
-        pageIndicator=text("1 / 1",13,false);pageIndicator.setGravity(Gravity.CENTER);
-        pageControls.addView(pageIndicator,new LinearLayout.LayoutParams(dp(64),dp(48)));
-        pageControls.addView(previousPage,new LinearLayout.LayoutParams(dp(48),dp(48)));
-        LinearLayout.LayoutParams nextLayout=new LinearLayout.LayoutParams(dp(48),dp(48));nextLayout.leftMargin=dp(8);
-        pageControls.addView(nextPage,nextLayout);
-        pageBar.addView(pageControls);root.addView(pageBar,new LinearLayout.LayoutParams(-1,-2));
+        pageBar=new LinearLayout(this);pageBar.setOrientation(1);line(pageBar,0xffbbbbbb);
+        LinearLayout pageControls=row();pageControls.setGravity(Gravity.CENTER_VERTICAL);pageControls.setPadding(dp(8),0,dp(8),0);
+        tabs=row();pageControls.addView(tabs,new LinearLayout.LayoutParams(-2,dp(52)));
+        pageControls.addView(new View(this),new LinearLayout.LayoutParams(0,1,1));
+        pageIndicator=text("1/1",12,false);pageIndicator.setGravity(Gravity.CENTER);
+        pageControls.addView(pageIndicator,new LinearLayout.LayoutParams(dp(38),dp(40)));
+        LinearLayout capsule=row();capsule.setGravity(Gravity.CENTER_VERTICAL);
+        GradientDrawable capsuleBorder=background(Color.WHITE,0,24);capsuleBorder.setStroke(dp(1),0xffb5b5b5);
+        capsule.setBackground(capsuleBorder);capsule.setPadding(dp(1),dp(1),dp(1),dp(1));
+        previousPage=new BarButton(this,"up","上一页");previousPage.setOnClickListener(v->turnPage(-1));
+        nextPage=new BarButton(this,"down","下一页");nextPage.setOnClickListener(v->turnPage(1));
+        capsule.addView(previousPage,new LinearLayout.LayoutParams(0,-1,1));
+        View separator=new View(this);separator.setBackgroundColor(0xffb5b5b5);capsule.addView(separator,new LinearLayout.LayoutParams(dp(1),-1));
+        capsule.addView(nextPage,new LinearLayout.LayoutParams(0,-1,1));
+        LinearLayout.LayoutParams capsuleLayout=new LinearLayout.LayoutParams(dp(112),dp(40));capsuleLayout.leftMargin=dp(6);
+        pageControls.addView(capsule,capsuleLayout);
+        pageBar.addView(pageControls);
+        LinearLayout.LayoutParams barLayout=new LinearLayout.LayoutParams(-1,-2);barLayout.leftMargin=-dp(20);barLayout.rightMargin=-dp(20);barLayout.bottomMargin=-dp(6);
+        root.addView(pageBar,barLayout);
         scroll.setOnScrollChangeListener((v,x,y,oldX,oldY)->updatePaging());
         scroll.addOnLayoutChangeListener((v,l,t,r,b,ol,ot,or,ob)->updatePaging());
         content.addOnLayoutChangeListener((v,l,t,r,b,ol,ot,or,ob)->updatePaging());
@@ -183,13 +190,14 @@ public class MainActivity extends Activity {
         tabs.removeAllViews();String[] ids={"lookup","ai","saved","history"};String[] labels={"词典","AI查词","生词本","历史"};
         for(int i=0;i<ids.length;i++){
             final String id=ids[i];LinearLayout cell=new LinearLayout(this);cell.setOrientation(1);
-            TextView label=text(labels[i],16,id.equals(tab));label.setGravity(Gravity.CENTER);label.setContentDescription(labels[i]);
-            cell.addView(label,new LinearLayout.LayoutParams(-1,0,1));View mark=new View(this);mark.setBackgroundColor(id.equals(tab)?Color.BLACK:Color.WHITE);cell.addView(mark,new LinearLayout.LayoutParams(-1,dp(3)));
-            cell.setOnClickListener(v->{hideKeyboard();tab=id;render();});tabs.addView(cell,new LinearLayout.LayoutParams(0,-1,1));
+            View mark=new View(this);mark.setBackgroundColor(id.equals(tab)?Color.BLACK:Color.WHITE);cell.addView(mark,new LinearLayout.LayoutParams(-1,dp(2)));
+            Button icon=new BarButton(this,id,labels[i]);icon.setSelected(id.equals(tab));
+            icon.setOnClickListener(v->{hideKeyboard();tab=id;render();});cell.addView(icon,new LinearLayout.LayoutParams(-1,0,1));
+            tabs.addView(cell,new LinearLayout.LayoutParams(dp(44),-1));
         }
     }
     private void render(){
-        pageBar.setVisibility("lookup".equals(tab)&&entry==null?View.GONE:View.VISIBLE);
+        pageBar.setVisibility(View.VISIBLE);
         scroll.post(this::updatePaging);
         renderTabs();content.removeAllViews();lookupButton.setText("ai".equals(tab)?(aiLoading?"生成中":"查询"):(loading?"查询中":"查询"));
         if("ai".equals(tab)){renderAi();scroll.scrollTo(0,0);return;}
@@ -239,7 +247,7 @@ public class MainActivity extends Activity {
         int max=maxScroll(),position=scroll.getScrollY(),step=pageStep();
         int total=(int)Math.ceil(max/(double)step)+1;
         int current=Math.min(total,(int)Math.ceil(position/(double)step)+1);
-        pageIndicator.setText(current+" / "+total);
+        pageIndicator.setText(current+"/"+total);
         previousPage.setEnabled(position>0);nextPage.setEnabled(position<max);
         previousPage.setTextColor(position>0?Color.BLACK:0xff999999);
         nextPage.setTextColor(position<max?Color.WHITE:0xffaaaaaa);
